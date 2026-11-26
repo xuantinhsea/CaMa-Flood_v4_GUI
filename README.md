@@ -1,49 +1,68 @@
 # CaMa_Floodcast
 
-A desktop application for the CaMa-Flood global river hydrodynamic model, modelled on the
-RRI_Floodcast interface.
+**Version 1.0** · A desktop application for the
+[CaMa-Flood](https://github.com/global-hydrodynamics/CaMa-Flood_v4) v4.30 global river
+hydrodynamic model, with an interface modelled on RRI_Floodcast.
 
-**Status: Phase 1 (MVP GUI) complete; Phase 2 (Domain Builder, Runoff Forcing, Physics Options,
-land cover → `CFLDMAN`) complete; Phase 3 underway (1-arcmin downscaling, scenario comparison,
-longitudinal profiles); Phase 4 underway (reservoir operation, parameter sweeps, levee
-protected-side diagnostics); the map interface across all six map-bearing tabs upgraded to a
-real Leaflet basemap (Street by default, auto-zoomed to the project's domain), named discrete
-colour-scale presets with an editor, a wider per-layer control panel, and a bounded render cache
-(decision D3, filled in -- see "The map interface" below); the whole UI recoloured to a light
-theme matching RRI_Floodcast's own palette (`ui/theme.py`), replacing the original dark theme;
-the Downscaling tab gained GeoTIFF/map-PNG/CSV export, a Fit-to-domain button, and a dual-axis
-area/volume chart; a customizable Download forcing dialog (Forcing menu) fetches ERA5-Land or
-GLDAS runoff directly, from either service's own API or Google Earth Engine, with an editable
-model domain/duration/output and an optional convert-to-binary step (see "Downloading forcing
-data" below) -- the app's first feature with real network calls.**
-All validated against real data, not fixtures. 294 tests pass (5
-skipped when optional fixtures are absent), including a live integration test that runs a real
-simulation through the GUI's own execution path, end-to-end tests that cut real regional domains
-out of the real global map with the real Fortran tools (`cut_domain` → … → `set_bifparam`),
-end-to-end downscaling tests — single-day and batch — that redistribute a real 365-day Mekong
-run's flood stage onto the real 1-arcmin sub-grid, a scenario-comparison test that measures the
-real effect of turning bifurcation off, a real longitudinal profile traced from the Kratie gauge
-to the delta outlet, a real reservoir-operation run with 5 real dams that measurably shifts
-downstream discharge in the physically expected direction (higher dry-season baseflow, lower
-flood peak), and a real levee-scheme run whose protected side measurably overtops during the wet
-season and stays dry the rest of the year. The domain-closure check reproduces the published
-reference deficits for the Mekong regional cut (Mekong 0.0%, Irrawaddy 0.0%, Salween 10.2%, upper
-Yangtze 15.3%, Brahmaputra 51.0%) exactly, and a Vietnam-shaped cut is confirmed to truncate the
-Mekong (40.6%) and Red River (34.9%) — Gate 1 correctly blocks it.
+CaMa_Floodcast takes a CaMa-Flood study from domain to results in one window: cut a regional
+domain, prepare and check the runoff forcing, edit the namelist, run the model, and explore the
+output on a map, as hydrographs and as scenario comparisons. It drives the real CaMa-Flood
+model and Fortran tools rather than re-implementing them. Every file it touches is the ordinary
+CaMa-Flood file you would edit by hand: the namelist, the map directory, the forcing files and
+the `.bin` results.
 
-A complete, real Mekong test project lives at `projects/mekong/` (built by
-`examples/make_mekong_project.py`): a full year, 5,528 river cells, 268 bifurcation paths,
-gauges snapped at Kratie/Pakse/Chiang Saen. Three more real cases sit alongside it:
-`no_bifurcation` (`examples/make_mekong_scenario.py`, `LPTHOUT=False`), `with_dams`
-(`examples/make_mekong_dams.py`, 5 real Lancang/upper-Mekong dams — Wunonglong, Lidi, Huangdeng,
-Dahuaqiao, Miaowei — from the GRanD database, allocated by real drainage-area snapping and given
-Qn/Qf measured from the real baseline discharge), and `with_levee` (`examples/make_mekong_levee.py`,
-an illustrative levee at the cell that floods deepest in the real baseline run, its crown height
-calibrated from that cell's own real peak depth). Open the project with **File → Open project**
-and compare any two cases in the Analysis tab.
+Developed by **Nguyen Xuan TINH (Ph.D.)** · © 2026 Nippon Koei Co.,Ltd. Water Resources & Energy
+Dept.
 
-User manual: [`USER_MANUAL.md`](USER_MANUAL.md) -- open/load/edit/run/results, tab by tab.
-Plan and architecture: [`../doc/camaflood_gui_plan/`](../doc/camaflood_gui_plan/README.md)
+## Features
+
+| Area | What you can do |
+|---|---|
+| **Domain** | Cut a regional domain from a larger map with the full CaMa-Flood tool chain (`cut_domain` → … → `set_bifparam`). **Gate 1** checks basin closure, so a cut that severs a river from its headwaters is caught before it biases discharge. Build a floodplain-roughness map (`CFLDMAN`) from land cover, including GeoTIFFs in any coordinate system. |
+| **Forcing** | Import binary or netCDF runoff, or download ERA5-Land or GLDAS directly (Copernicus CDS, NASA GES DISC or Google Earth Engine). **Gate 2** audits units, missing days and latitude order. |
+| **Configuration** | Edit the full namelist with validation and tooltips, plus an explained Physics tab for bifurcation, levees, dams, sea level, the adaptive time step and roughness. Create parameter sweeps that vary one field across several cases. |
+| **Running** | Run cases from a job queue with pre-flight validation, a live log and a live water-balance monitor. Results that no longer match their inputs are flagged as stale. |
+| **Results** | Map and probe output over Leaflet basemaps (street, satellite, topographic), with editable colour scales. Draw gauge hydrographs and export them to CSV or PNG. |
+| **Analysis** | Compare scenarios with A − B difference maps and paired hydrographs (NSE, KGE, PBIAS). Trace longitudinal river profiles, and see levee overtopping statistics. |
+| **Downscaling** | Map 1-arcminute inundation depth for one day or a period (maximum-depth composite and area/volume series), with GeoTIFF, PNG and CSV export. |
+
+## Validated against real data
+
+The 299 automated tests use real data rather than synthetic fixtures. They include:
+
+- a full simulation run through the GUI's own execution path;
+- regional domains cut from the real global map with the real Fortran tools;
+- downscaling of a 365-day Mekong run onto the real 1-arcminute sub-grid;
+- a reservoir run with 5 real dams that shifts downstream discharge in the expected direction (higher dry-season flow, lower flood peak);
+- a levee run whose protected side overtops in the wet season and stays dry otherwise.
+
+The Gate 1 check reproduces the published closure deficits for the Mekong regional cut exactly
+(Mekong 0.0%, Irrawaddy 0.0%, Salween 10.2%, upper Yangtze 15.3%, Brahmaputra 51.0%). It also
+correctly blocks a Vietnam-shaped cut, which truncates the Mekong (40.6%) and the Red River
+(34.9%).
+
+## Example projects
+
+The Windows installer ships four ready-to-open projects with results, maps and forcing:
+
+- **Mekong**: a full year, 5,528 river cells, 268 bifurcation paths, and gauges at Kratie, Pakse and Chiang Saen. It has four cases:
+  - `baseline`;
+  - `no_bifurcation`;
+  - `with_dams`: 5 GRanD reservoirs on the Lancang/upper Mekong;
+  - `with_levee`: an illustrative levee at the cell that floods deepest in the baseline run.
+- **Vietnam (national)**: a deliberately truncated cut that demonstrates Gate 1.
+- **Philippines (national)**: a hydrologically closed cut.
+- **Cagayan**: a small catchment-scale cut.
+
+From source, the Mekong project is rebuilt by `examples/make_mekong_project.py`. Its three extra
+cases come from `make_mekong_scenario.py`, `make_mekong_dams.py` and `make_mekong_levee.py`.
+
+## Documentation
+
+The [User manual](USER_MANUAL.md) covers installation, the example projects and each tab in
+turn. It is also available as [Word](USER_MANUAL.docx) and [PDF](USER_MANUAL.pdf). The sections
+below are developer notes on running from source, building the installer, the architecture and
+testing.
 
 ---
 
@@ -313,7 +332,7 @@ and checks it reaches its own input handling, then reports the build signature.
 ## Tests
 
 ```bash
-python -m pytest tests/ -q                                    # 294 tests (5 skip w/o optional fixtures)
+python -m pytest tests/ -q                                    # 299 tests (some skip w/o optional fixtures)
 python examples/phase0_end_to_end.py --case mekong --days 60  # SDK, no GUI
 python examples/make_mekong_project.py --days 365             # builds projects/mekong/
 python examples/make_mekong_scenario.py                       # + the no_bifurcation case
@@ -353,8 +372,7 @@ Downscaling tab is a separate view for now rather than a toggle on that same map
 is ~28 km across; painting `flddph` at that resolution produces blocky cells that look like an
 inundation map and are not, which is exactly why the Downscaling tab exists.
 
-`conv_flood` and `igetday` (the other two binaries `08-model-binaries.md` lists under the
-downscale tier) are deliberately not built or wrapped: `conv_flood` converted downscaled depth
+`conv_flood` and `igetday` (the other two binaries in CaMa-Flood's downscaling tool set) are deliberately not built or wrapped: `conv_flood` converted downscaled depth
 for a shell-script-era visualisation path this GUI's own renderer already supersedes, and
 `igetday` was a day-in-month helper for a batch loop that `core/downscale.record_for_date`
 does directly in Python. Only `downscale_flddph_trib` (the actual redistribution) is needed.
