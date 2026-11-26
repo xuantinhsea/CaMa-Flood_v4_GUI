@@ -353,28 +353,7 @@ python examples/make_mekong_levee.py                          # + the with_levee
 GUI tests run with `QT_QPA_PLATFORM=offscreen`. `MainWindow.interactive = False` suppresses
 modal dialogs, which would otherwise block the event loop with nothing to dismiss them.
 
-## Not yet built
-
-| Phase | Scope |
-|---|---|
-| **3** (remainder) | Exposure overlays (needs population/asset data this package does not ship), frequency analysis (needs a multi-year run; only 2000-2001 forcing ships here), **global scale** (vector output, tile server) |
-| **4** (remainder) | Operation-scheme selector UI (today: `LDAMH22`/`LDAMYBY`/`LiVnorm` are plain namelist checkboxes, not an explained scheme picker), storage-curve preview graphics, an allocate-by-map-click workflow for building a new `CDAMFILE` (today: the dam table only *reads* an existing one — `core/dams.write_dam_file` exists and is tested but has no UI), a levee-map *builder* (today: the Physics tab reads and explains an existing `CLEVHGT`/`CLEVFRC` pair; there is no map-click or raster-derived way to create one), plugin API |
-| **5** | Installers, docs, sample projects |
-
-Also not built: a generic vector/GeoJSON overlay layer (the real basin boundary or river network
-as vectors rather than only raster `MapLayer`s) and shapefile import -- the Leaflet renderer's
-current overlay types are rasters, point markers and a domain rectangle, which is everything the
-app's own tabs use today, not the full RRI-style vector stack.
-
-Decision D3 (a web-based basemap behind `MapRenderer`) is filled in -- see "The map interface"
-above -- with Leaflet rather than the originally-envisaged MapLibre, chosen for a lighter
-dependency footprint since vector-tile styling was never actually needed here, just raster
-basemaps and image overlays.
-
-Map & Results still shows the **model grid** only, and says so permanently under the map — the
-Downscaling tab is a separate view for now rather than a toggle on that same map. A 0.25° cell
-is ~28 km across; painting `flddph` at that resolution produces blocky cells that look like an
-inundation map and are not, which is exactly why the Downscaling tab exists.
+## Implementation notes
 
 `conv_flood` and `igetday` (the other two binaries in CaMa-Flood's downscaling tool set) are deliberately not built or wrapped: `conv_flood` converted downscaled depth
 for a shell-script-era visualisation path this GUI's own renderer already supersedes, and
