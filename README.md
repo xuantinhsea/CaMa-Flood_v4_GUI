@@ -43,7 +43,11 @@ correctly blocks a Vietnam-shaped cut, which truncates the Mekong (40.6%) and th
 
 ## Example projects
 
-The Windows installer ships four ready-to-open projects with results, maps and forcing:
+Four ready-to-open projects, with their results, river maps and forcing, are available as
+**[CaMa_Floodcast_examples_1.0.zip](https://github.com/xuantinhsea/CaMa-Flood_v4_GUI/releases/download/v1.0/CaMa_Floodcast_examples_1.0.zip)**
+(189 MB, from the [v1.0 release](https://github.com/xuantinhsea/CaMa-Flood_v4_GUI/releases/tag/v1.0)).
+The Windows installer includes the same projects. Unzip anywhere, keeping `projects\`, `map\` and
+`inp\` side by side, then choose **File → Open project** and pick a folder under `projects\`:
 
 - **Mekong**: a full year, 5,528 river cells, 268 bifurcation paths, and gauges at Kratie, Pakse and Chiang Saen. It has four cases:
   - `baseline`;
