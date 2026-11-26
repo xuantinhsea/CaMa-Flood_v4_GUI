@@ -1,0 +1,68 @@
+&NRUNVER
+LADPSTP  = .TRUE.
+LFLDOUT  = .TRUE.
+LPTHOUT  = .TRUE.
+LDAMOUT  = .FALSE.
+LRESTART = .FALSE.
+LWBLOG   = .TRUE.
+/
+&NDIMTIME
+CDIMINFO = "C:\Users\B1813\Downloads\CaMa-Flood\cmf_v430_pkg_20260312\map\phl_15min\diminfo_test-1deg.txt"
+DT       = 3600
+IFRQ_INP = 24
+/
+&NPARAM
+PMANRIV  = 0.03D0
+PMANFLD  = 0.10D0
+PDSTMTH  = 10000.D0
+PCADP    = 0.7
+
+/
+&NSIMTIME
+SYEAR = 2000
+SMON  = 1
+SDAY  = 1
+SHOUR = 0
+EYEAR = 2000
+EMON  = 1
+EDAY  = 3
+EHOUR = 0
+/
+&NMAP
+LMAPCDF = .FALSE.
+CNEXTXY = "C:\Users\B1813\Downloads\CaMa-Flood\cmf_v430_pkg_20260312\map\phl_15min\nextxy.bin"
+CGRAREA = "C:\Users\B1813\Downloads\CaMa-Flood\cmf_v430_pkg_20260312\map\phl_15min\ctmare.bin"
+CELEVTN = "C:\Users\B1813\Downloads\CaMa-Flood\cmf_v430_pkg_20260312\map\phl_15min\elevtn.bin"
+CNXTDST = "C:\Users\B1813\Downloads\CaMa-Flood\cmf_v430_pkg_20260312\map\phl_15min\nxtdst.bin"
+CRIVLEN = "C:\Users\B1813\Downloads\CaMa-Flood\cmf_v430_pkg_20260312\map\phl_15min\rivlen.bin"
+CFLDHGT = "C:\Users\B1813\Downloads\CaMa-Flood\cmf_v430_pkg_20260312\map\phl_15min\fldhgt.bin"
+CRIVWTH = "C:\Users\B1813\Downloads\CaMa-Flood\cmf_v430_pkg_20260312\map\phl_15min\rivwth_gwdlr.bin"
+CRIVHGT = "C:\Users\B1813\Downloads\CaMa-Flood\cmf_v430_pkg_20260312\map\phl_15min\rivhgt.bin"
+CRIVMAN = "C:\Users\B1813\Downloads\CaMa-Flood\cmf_v430_pkg_20260312\map\phl_15min\rivman.bin"
+CPTHOUT = "C:\Users\B1813\Downloads\CaMa-Flood\cmf_v430_pkg_20260312\map\phl_15min\bifprm.txt"
+/
+&NRESTART
+CRESTSTO = ""
+CRESTDIR = "./"
+CVNREST  = "restart"
+LRESTCDF = .FALSE.
+IFRQ_RST = 0
+/
+&NFORCE
+LINPCDF  = .FALSE.
+LINTERP  = .TRUE.
+CINPMAT  = "C:\Users\B1813\Downloads\CaMa-Flood\cmf_v430_pkg_20260312\map\phl_15min\inpmat_test-1deg.bin"
+DROFUNIT = 86400000
+CROFDIR  = "C:\Users\B1813\Downloads\CaMa-Flood\cmf_v430_pkg_20260312\inp\test_1deg\runoff\"
+CROFPRE  = "Roff____"
+CROFSUF  = ".one"
+/
+&NOUTPUT
+COUTDIR  = "./"
+CVARSOUT = "outflw,storge,rivdph,rivvel,fldare,fldfrc,flddph,sfcelv,maxdph"
+COUTTAG  = "phl"
+LOUTVEC  = .FALSE.
+LOUTCDF  = .FALSE.
+NDLEVEL  = 0
+IFRQ_OUT = 24
+/

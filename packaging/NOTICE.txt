@@ -1,0 +1,30 @@
+CaMa_Floodcast 1.0
+Desktop application for the CaMa-Flood global river hydrodynamic model
+
+Developed by: Nguyen Xuan TINH (Ph.D.)
+
+License and Copyright (c) 2026
+Nippon Koei Co.,Ltd. Water Resources & Energy Dept.
+5-4 Kojimachi, Chiyoda-ku, Tokyo 102-8539, JAPAN
+Tel:    +81-80-4689-7461
+E-Mail: tinh-ng@n-koei.jp
+URL:    https://www.n-koei.co.jp/consulting/english/
+
+All rights reserved.
+
+
+THIRD-PARTY COMPONENTS
+----------------------
+This installation includes software and data from other parties, each under its own
+license:
+
+* CaMa-Flood v4.30 model (MAIN_cmf.exe) and its map/domain tools (bin\win64\*.exe),
+  and the example river maps derived from the CaMa-Flood global map
+  -- Apache License 2.0, see CaMa-Flood_LICENSE.txt in this folder.
+* MinGW-w64 / GCC runtime libraries (libgfortran, libgomp, libquadmath, libgcc_s,
+  libwinpthread) -- GPL v3 with the GCC Runtime Library Exception.
+* Qt 6 and PyQt6 (user interface), including Qt WebEngine (Chromium).
+* Python, NumPy, Matplotlib and the other Python libraries bundled in _internal\.
+* Leaflet (map display) -- BSD 2-Clause License.
+* Basemap tiles are fetched at run time from OpenStreetMap, OpenTopoMap and Esri and
+  are subject to those providers' terms of use and attribution requirements.

@@ -1,0 +1,25 @@
+# Build output (build_exe.bat / build_installer.bat) -- ship installers as GitHub Releases
+build/
+dist/
+
+# Project data: gigabytes of model output. Rebuilt by examples/make_mekong_*.py;
+# the installer stages cleaned copies (packaging/stage_installer.py).
+projects/
+projects - Shortcut.lnk
+examples/_phase2_demo/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Model run leftovers and namelist backups
+log_CaMa.txt
+*.bak
+
+# Local tool settings
+.claude/
+
+# Development plan -- kept local, not published
+camaflood_gui_plan/
